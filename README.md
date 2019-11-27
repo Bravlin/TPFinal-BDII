@@ -1,1 +1,5 @@
-# TP-Final---BDII
+# TPFinal-BDII
+
+## Instalación
+
+Ejecutar ```npm install```

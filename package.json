@@ -1,0 +1,31 @@
+{
+  "name": "tpfinal-bdii",
+  "version": "1.0.0",
+  "description": "Trabajo final de la materia Bases de Datos II",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bravlin/TPFinal-BDII.git"
+  },
+  "keywords": [
+    "mysql",
+    "json",
+    "bases",
+    "datos",
+    "barcos",
+    "geolocalizacion"
+  ],
+  "author": "Sol Vilchez, Juan Pico, Braulio Pablos",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Bravlin/TPFinal-BDII/issues"
+  },
+  "homepage": "https://github.com/Bravlin/TPFinal-BDII#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "mysql": "^2.17.1"
+  }
+}
