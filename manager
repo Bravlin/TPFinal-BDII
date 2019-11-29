@@ -1,0 +1,30 @@
+#!/usr/bin/env node
+
+const fs = require('fs');
+const mysql = require('mysql');
+
+const args = process.argv;
+var config = JSON.parse(fs.readFileSync('.config'));
+
+const commands = {
+    'db': () => {
+        const sub = {
+            'ping': () => {
+                let dbcon = mysql.createConnection({
+                    host: config.mysql.host,
+                    user: config.mysql.user,
+                    password: config.mysql.password
+                });
+                
+                dbcon.ping(err => {
+                    if (err) throw err;
+                    console.log("Connected to MySQL.");
+                    dbcon.end();
+                });
+            }
+        }
+        sub[args[3]]();
+    }
+}
+
+commands[args[2]]();
