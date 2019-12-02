@@ -6,25 +6,63 @@ const mysql = require('mysql');
 const args = process.argv;
 var config = JSON.parse(fs.readFileSync('.config'));
 
+function help() {
+    let output =
+        "Final Project for the course Databases II\n\n"
+        + "Commands:\n\n"
+        + "db create    create the database with the configured name\n"
+        + "db ping      check database connection\n\n"
+        + "help         shows available commands\n";
+    console.log(output);
+}
+
+function dbCreate() {
+    let dbcon = mysql.createConnection({
+        host: config.mysql.host,
+        user: config.mysql.user,
+        password: config.mysql.password,
+    });
+
+    dbcon.query("CREATE DATABASE " + config.mysql.database, (err, result) => {
+        if (err) throw err;
+        console.log("Database created.");
+        dbcon.end();
+    });
+}
+
+function dbPing() {
+    let dbcon = mysql.createConnection({
+        host: config.mysql.host,
+        user: config.mysql.user,
+        password: config.mysql.password
+    });
+    
+    dbcon.ping(err => {
+        if (err) throw err;
+        console.log("Connected to MySQL.");
+        dbcon.end();
+    });
+}
+
 const commands = {
     'db': () => {
         const sub = {
-            'ping': () => {
-                let dbcon = mysql.createConnection({
-                    host: config.mysql.host,
-                    user: config.mysql.user,
-                    password: config.mysql.password
-                });
-                
-                dbcon.ping(err => {
-                    if (err) throw err;
-                    console.log("Connected to MySQL.");
-                    dbcon.end();
-                });
-            }
+            'create': dbCreate,
+            'ping': dbPing
         }
-        sub[args[3]]();
-    }
+        try {
+            sub[args[3]]();
+        }
+        catch (err) {
+            console.log('Invalid command.');
+        }
+    },
+    'help': help
 }
 
-commands[args[2]]();
+try {
+    commands[args[2]]();
+}
+catch (err) {
+    console.log('Invalid command.');
+}
