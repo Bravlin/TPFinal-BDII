@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require('fs');
-const mysql = require('mysql');
+const mysql_handler = require('./mysql-handler');
 
 const args = process.argv;
 var config = JSON.parse(fs.readFileSync('.config'));
@@ -10,46 +10,26 @@ function help() {
     let output =
         "Final Project for the course Databases II\n\n"
         + "Commands:\n\n"
-        + "db create    create the database with the configured name\n"
-        + "db ping      check database connection\n\n"
-        + "help         shows available commands\n";
+        + "db create        create the database with the configured name\n"
+        + "db migrate       migrate the database structure\n"
+        + "db ping          check database connection\n\n"
+        + "help             shows available commands\n";
     console.log(output);
-}
-
-function dbCreate() {
-    let dbcon = mysql.createConnection({
-        host: config.mysql.host,
-        user: config.mysql.user,
-        password: config.mysql.password,
-    });
-
-    dbcon.query("CREATE DATABASE " + config.mysql.database, (err, result) => {
-        if (err) throw err;
-        console.log("Database created.");
-        dbcon.end();
-    });
-}
-
-function dbPing() {
-    let dbcon = mysql.createConnection({
-        host: config.mysql.host,
-        user: config.mysql.user,
-        password: config.mysql.password
-    });
-    
-    dbcon.ping(err => {
-        if (err) throw err;
-        console.log("Connected to MySQL.");
-        dbcon.end();
-    });
 }
 
 const commands = {
     'db': () => {
         const sub = {
-            'create': dbCreate,
-            'ping': dbPing
-        }
+            'create': () => {
+                mysql_handler.createDatabase(config.mysql.host, config.mysql.user, config.mysql.password, config.mysql.database);
+            },
+            'migrate': () => {
+                mysql_handler.migrateDatabase(config.mysql.host, config.mysql.user, config.mysql.password, config.mysql.database);
+            },
+            'ping': () => {
+                mysql_handler.pingDatabase(config.mysql.host, config.mysql.user, config.mysql.password);
+            }
+        };
         try {
             sub[args[3]]();
         }
