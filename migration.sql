@@ -37,41 +37,6 @@ CREATE TABLE `barco` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `barco`
---
-
-LOCK TABLES `barco` WRITE;
-/*!40000 ALTER TABLE `barco` DISABLE KEYS */;
-/*!40000 ALTER TABLE `barco` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `datos_sensor`
---
-
-DROP TABLE IF EXISTS `datos_sensor`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `datos_sensor` (
-  `id_datos_sensor` int(11) NOT NULL AUTO_INCREMENT,
-  `fk_derrotero` int(11) NOT NULL,
-  `datos` json NOT NULL,
-  PRIMARY KEY (`id_datos_sensor`),
-  KEY `datos_sensor_derroteroFK` (`fk_derrotero`),
-  CONSTRAINT `datos_sensor_derroteroFK` FOREIGN KEY (`fk_derrotero`) REFERENCES `derrotero` (`id_derrotero`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `datos_sensor`
---
-
-LOCK TABLES `datos_sensor` WRITE;
-/*!40000 ALTER TABLE `datos_sensor` DISABLE KEYS */;
-/*!40000 ALTER TABLE `datos_sensor` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `derrotero`
 --
 
@@ -98,15 +63,6 @@ CREATE TABLE `derrotero` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `derrotero`
---
-
-LOCK TABLES `derrotero` WRITE;
-/*!40000 ALTER TABLE `derrotero` DISABLE KEYS */;
-/*!40000 ALTER TABLE `derrotero` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `empresa`
 --
 
@@ -121,13 +77,22 @@ CREATE TABLE `empresa` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `empresa`
+-- Table structure for table `mediciones`
 --
 
-LOCK TABLES `empresa` WRITE;
-/*!40000 ALTER TABLE `empresa` DISABLE KEYS */;
-/*!40000 ALTER TABLE `empresa` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `mediciones`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `mediciones` (
+  `id_mediciones` int(11) NOT NULL AUTO_INCREMENT,
+  `fk_derrotero` int(11) NOT NULL,
+  `posicion` json NOT NULL,
+  `datos_sensores` json DEFAULT NULL,
+  PRIMARY KEY (`id_mediciones`),
+  KEY `datos_sensor_derroteroFK` (`fk_derrotero`),
+  CONSTRAINT `datos_sensor_derroteroFK` FOREIGN KEY (`fk_derrotero`) REFERENCES `derrotero` (`id_derrotero`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `pescado`
@@ -148,15 +113,6 @@ CREATE TABLE `pescado` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `pescado`
---
-
-LOCK TABLES `pescado` WRITE;
-/*!40000 ALTER TABLE `pescado` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pescado` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `puerto`
 --
 
@@ -170,15 +126,6 @@ CREATE TABLE `puerto` (
   PRIMARY KEY (`id_puerto`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `puerto`
---
-
-LOCK TABLES `puerto` WRITE;
-/*!40000 ALTER TABLE `puerto` DISABLE KEYS */;
-/*!40000 ALTER TABLE `puerto` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `tipo_pescado`
@@ -195,15 +142,6 @@ CREATE TABLE `tipo_pescado` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tipo_pescado`
---
-
-LOCK TABLES `tipo_pescado` WRITE;
-/*!40000 ALTER TABLE `tipo_pescado` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tipo_pescado` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping routines for database 'Barcos'
 --
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -216,4 +154,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-02 19:35:43
+-- Dump completed on 2019-12-05 17:07:56
