@@ -16,6 +16,20 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `banco_pesca`
+--
+
+DROP TABLE IF EXISTS `banco_pesca`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `banco_pesca` (
+  `id_banco_pesca` int(11) NOT NULL AUTO_INCREMENT,
+  `poligono` json NOT NULL,
+  PRIMARY KEY (`id_banco_pesca`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `barco`
 --
 
@@ -52,6 +66,7 @@ CREATE TABLE `derrotero` (
   `fecha_arribo_estim` date NOT NULL,
   `fecha_arribo` date DEFAULT NULL,
   `puntos_viaje` json NOT NULL,
+  `trayecto_real` json DEFAULT NULL,
   PRIMARY KEY (`id_derrotero`),
   KEY `barco_derrotero_FK` (`fk_barco`),
   KEY `salida_FK_1` (`puerto_salida`),
@@ -77,18 +92,19 @@ CREATE TABLE `empresa` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `mediciones`
+-- Table structure for table `medicion`
 --
 
-DROP TABLE IF EXISTS `mediciones`;
+DROP TABLE IF EXISTS `medicion`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `mediciones` (
-  `id_mediciones` int(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE `medicion` (
+  `id_medicion` int(11) NOT NULL AUTO_INCREMENT,
   `fk_derrotero` int(11) NOT NULL,
   `posicion` json NOT NULL,
   `datos_sensores` json DEFAULT NULL,
-  PRIMARY KEY (`id_mediciones`),
+  `fecha` datetime NOT NULL,
+  PRIMARY KEY (`id_medicion`),
   KEY `datos_sensor_derroteroFK` (`fk_derrotero`),
   CONSTRAINT `datos_sensor_derroteroFK` FOREIGN KEY (`fk_derrotero`) REFERENCES `derrotero` (`id_derrotero`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -154,4 +170,4 @@ CREATE TABLE `tipo_pescado` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-05 17:07:56
+-- Dump completed on 2019-12-07 10:56:20

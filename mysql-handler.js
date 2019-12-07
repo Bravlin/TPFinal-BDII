@@ -24,8 +24,11 @@ module.exports.createDatabase = (host, user, password, database_name) => {
 
     dbcon.query("CREATE DATABASE " + database_name, (err, result) => {
         if (err) throw err;
-        console.log("Database created.");
-        dbcon.end();
+        dbcon.query("ALTER DATABASE " + database_name + " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci", (err, result) => {
+            if (err) throw err;
+            console.log("Database created.");
+            dbcon.end();
+        });
     });
 }
 
