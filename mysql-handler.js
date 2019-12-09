@@ -41,3 +41,31 @@ module.exports.migrateDatabase = (host, user, password, database) => {
         console.log(err);
     }
 }
+
+module.exports.getConnection = (host, user, password, database) => {
+    var connection_object = {
+        pool: mysql.createPool({
+            host: host,
+            user: user,
+            password: password,
+            database: database
+        }),
+        query: (query, callback) => {
+            this.pool.getConnection((err, connection) => {
+                if (err) {
+                    connection.release();
+                    throw err;
+                }
+                else {
+                    connection.query(query, (error, results, fields) => {
+                        connection.release();
+                        if (error) throw error;
+                        callback(results, fields);
+                    });
+                }
+            });
+        }
+    }
+    
+    return connection_object;
+}
