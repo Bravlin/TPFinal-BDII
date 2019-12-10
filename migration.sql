@@ -131,8 +131,8 @@ CREATE TABLE `medicion` (
   `datos_sensores` json DEFAULT NULL,
   `fecha` datetime NOT NULL,
   PRIMARY KEY (`id_medicion`),
-  KEY `datos_sensor_derroteroFK` (`fk_derrotero`),
-  CONSTRAINT `datos_sensor_derroteroFK` FOREIGN KEY (`fk_derrotero`) REFERENCES `derrotero` (`id_derrotero`)
+  KEY `medicion_derroteroFK` (`fk_derrotero`),
+  CONSTRAINT `medicion_derroteroFK` FOREIGN KEY (`fk_derrotero`) REFERENCES `derrotero` (`id_derrotero`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
