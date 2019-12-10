@@ -51,6 +51,18 @@ CREATE TABLE `barco` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Temporary table structure for view `barcos_consumo_excesivo`
+--
+
+DROP TABLE IF EXISTS `barcos_consumo_excesivo`;
+/*!50001 DROP VIEW IF EXISTS `barcos_consumo_excesivo`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `barcos_consumo_excesivo` AS SELECT 
+ 1 AS `id_barco`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `derrotero`
 --
 
@@ -243,6 +255,24 @@ DELIMITER ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
+-- Final view structure for view `barcos_consumo_excesivo`
+--
+
+/*!50001 DROP VIEW IF EXISTS `barcos_consumo_excesivo`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013  SQL SECURITY DEFINER */
+/*!50001 VIEW `barcos_consumo_excesivo` AS select `b`.`id_barco` AS `id_barco` from (`barco` `b` join `derrotero` `d` on((`d`.`fk_barco` = `b`.`id_barco`))) where ((`d`.`id_derrotero` = (select `d2`.`id_derrotero` from `derrotero` `d2` where (`d2`.`fk_barco` = `b`.`id_barco`) order by `d2`.`fecha_salida` limit 1)) and ((select avg(json_unquote(json_extract(`m`.`datos_sensores`,'$.consumo'))) from `medicion` `m` where (`m`.`fk_derrotero` = `d`.`id_derrotero`)) > (`b`.`consumo_promedio` * 1.1))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `informe_bancos_pesca`
 --
 
@@ -269,4 +299,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-09 13:39:50
+-- Dump completed on 2019-12-10 15:06:18
