@@ -51,21 +51,9 @@ module.exports.getConnection = (host, user, password, database) => {
             database: database
         }),
         query: (query, callback) => {
-            this.pool.getConnection((err, connection) => {
-                if (err) {
-                    connection.release();
-                    throw err;
-                }
-                else {
-                    connection.query(query, (error, results, fields) => {
-                        connection.release();
-                        if (error) throw error;
-                        callback(results, fields);
-                    });
-                }
-            });
+            connection_object.pool.query(query, callback);
         }
     }
-    
+
     return connection_object;
 }

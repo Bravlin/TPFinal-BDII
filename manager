@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const mysql_handler = require('./mysql-handler');
+const server = require('./server');
 
 const args = process.argv;
 var config = JSON.parse(fs.readFileSync('.config'));
@@ -19,7 +20,7 @@ function help() {
 
 const commands = {
     'db': () => {
-        const sub = {
+        const subdb = {
             'create': () => {
                 mysql_handler.createDatabase(config.mysql.host, config.mysql.user, config.mysql.password, config.mysql.database);
             },
@@ -31,13 +32,27 @@ const commands = {
             }
         };
         try {
-            sub[args[3]]();
+            subdb[args[3]]();
         }
         catch (err) {
             console.log('Invalid command.');
         }
     },
-    'help': help
+    'help': help,
+    'server': () => {
+        const subserver = {
+            'start': () => {
+                var db = mysql_handler.getConnection(config.mysql.host, config.mysql.user, config.mysql.password, config.mysql.database);
+                server.startServer(config.server.host, config.server.port, db);
+            }
+        };
+        try {
+            subserver[args[3]]();
+        }
+        catch (err) {
+            console.log('Invalid command.');
+        }
+    }
 }
 
 try {
