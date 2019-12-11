@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TP BDII</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
+  integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+  crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+  integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+  crossorigin=""></script>
+    
+    <link rel="stylesheet" href="css.css">
+</head>
+<body>
+    <div><button class="bubbly-button" onclick="Consulta()">Que fecha y que barcos pasaron por ciertos bancos de pesca.</button></div>
+    <div><button class="bubbly-button">Cantidad de barcos fuera de puertos</button></div>
+    <div><button class="bubbly-button">Cuántos barcos tuvieron una desviación de más del 10% en tiempo del derrotero.</button></div>
+    <div><button class="bubbly-button">Generar una alerta de los barcos que se saltearon un punto del derrotero.</button></div>
+    <div><button class="bubbly-button">Cuántos barcos llegaron al puerto mar del plata.</button></div>
+    <div><button class="bubbly-button">Cuántos barcos cruzaron la latitud -33</button></div>
+    <div><button class="bubbly-button">Que barcos están consumiendo más combustible de lo debido</button></div>
+    <div><button class="bubbly-button">Decir que empresa pescó más merluza en el última semana.</button></div>
+    <h1 id='parrafo'>SOY el que cambia</h1>
+    <div id="map"></div>
+
+    
+    <script src="js.js"></script>
+</body>
+</html>
