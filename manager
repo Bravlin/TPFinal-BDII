@@ -11,10 +11,11 @@ function help() {
     let output =
         "Final Project for the course Databases II\n\n"
         + "Commands:\n\n"
-        + "db create        create the database with the configured name\n"
-        + "db migrate       migrate the database structure\n"
-        + "db ping          check database connection\n\n"
-        + "help             shows available commands\n";
+        + "db create        creates the database with the configured name\n"
+        + "db migrate       migrates the database structure\n"
+        + "db ping          checks database connection\n\n"
+        + "help             shows available commands\n\n"
+        + "server start     starts server with the configured parameters\n\n";
     console.log(output);
 }
 
