@@ -13,7 +13,7 @@ module.exports.pingDatabase = (host, user, password) => {
         console.log("Connected to MySQL.");
         dbcon.end();
     });
-}
+};
 
 module.exports.createDatabase = (host, user, password, database_name) => {
     let dbcon = mysql.createConnection({
@@ -30,7 +30,7 @@ module.exports.createDatabase = (host, user, password, database_name) => {
             dbcon.end();
         });
     });
-}
+};
 
 module.exports.migrateDatabase = (host, user, password, database) => {
     try {
@@ -40,7 +40,7 @@ module.exports.migrateDatabase = (host, user, password, database) => {
     catch (err) {
         console.log(err);
     }
-}
+};
 
 module.exports.getConnection = (host, user, password, database) => {
     var pool = mysql.createPool({
@@ -50,9 +50,5 @@ module.exports.getConnection = (host, user, password, database) => {
         database: database
     });
 
-    return {
-        query: (query, callback) => {
-            pool.query(query, callback);
-        }
-    };
-}
+    return pool;
+};
