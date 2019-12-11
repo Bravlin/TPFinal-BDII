@@ -16,6 +16,20 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `banco_pesca`
+--
+
+DROP TABLE IF EXISTS `banco_pesca`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `banco_pesca` (
+  `id_banco_pesca` int(11) NOT NULL AUTO_INCREMENT,
+  `region` polygon NOT NULL,
+  PRIMARY KEY (`id_banco_pesca`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `barco`
 --
 
@@ -33,43 +47,20 @@ CREATE TABLE `barco` (
   PRIMARY KEY (`id_barco`),
   KEY `barco_empresaFK` (`fk_empresa`),
   CONSTRAINT `barco_empresaFK` FOREIGN KEY (`fk_empresa`) REFERENCES `empresa` (`id_empresa`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `barco`
+-- Temporary table structure for view `barcos_consumo_excesivo`
 --
 
-LOCK TABLES `barco` WRITE;
-/*!40000 ALTER TABLE `barco` DISABLE KEYS */;
-/*!40000 ALTER TABLE `barco` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `datos_sensor`
---
-
-DROP TABLE IF EXISTS `datos_sensor`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `datos_sensor` (
-  `id_datos_sensor` int(11) NOT NULL AUTO_INCREMENT,
-  `fk_derrotero` int(11) NOT NULL,
-  `datos` json NOT NULL,
-  PRIMARY KEY (`id_datos_sensor`),
-  KEY `datos_sensor_derroteroFK` (`fk_derrotero`),
-  CONSTRAINT `datos_sensor_derroteroFK` FOREIGN KEY (`fk_derrotero`) REFERENCES `derrotero` (`id_derrotero`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `datos_sensor`
---
-
-LOCK TABLES `datos_sensor` WRITE;
-/*!40000 ALTER TABLE `datos_sensor` DISABLE KEYS */;
-/*!40000 ALTER TABLE `datos_sensor` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `barcos_consumo_excesivo`;
+/*!50001 DROP VIEW IF EXISTS `barcos_consumo_excesivo`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `barcos_consumo_excesivo` AS SELECT 
+ 1 AS `id_barco`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `derrotero`
@@ -82,11 +73,12 @@ CREATE TABLE `derrotero` (
   `id_derrotero` int(11) NOT NULL AUTO_INCREMENT,
   `fk_barco` int(11) NOT NULL,
   `puerto_salida` int(11) NOT NULL,
-  `fecha_salida` date NOT NULL,
+  `fecha_salida` datetime NOT NULL,
   `puerto_arribo` int(11) NOT NULL,
-  `fecha_arribo_estim` date NOT NULL,
-  `fecha_arribo` date DEFAULT NULL,
+  `fecha_arribo_estim` datetime NOT NULL,
+  `fecha_arribo` datetime DEFAULT NULL,
   `puntos_viaje` json NOT NULL,
+  `trayecto_real` json DEFAULT NULL,
   PRIMARY KEY (`id_derrotero`),
   KEY `barco_derrotero_FK` (`fk_barco`),
   KEY `salida_FK_1` (`puerto_salida`),
@@ -94,17 +86,8 @@ CREATE TABLE `derrotero` (
   CONSTRAINT `arribo_FK_2` FOREIGN KEY (`puerto_arribo`) REFERENCES `puerto` (`id_puerto`),
   CONSTRAINT `barco_derrotero_FK` FOREIGN KEY (`fk_barco`) REFERENCES `barco` (`id_barco`),
   CONSTRAINT `salida_FK_1` FOREIGN KEY (`puerto_salida`) REFERENCES `puerto` (`id_puerto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `derrotero`
---
-
-LOCK TABLES `derrotero` WRITE;
-/*!40000 ALTER TABLE `derrotero` DISABLE KEYS */;
-/*!40000 ALTER TABLE `derrotero` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `empresa`
@@ -117,17 +100,41 @@ CREATE TABLE `empresa` (
   `id_empresa` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id_empresa`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `empresa`
+-- Temporary table structure for view `informe_bancos_pesca`
 --
 
-LOCK TABLES `empresa` WRITE;
-/*!40000 ALTER TABLE `empresa` DISABLE KEYS */;
-/*!40000 ALTER TABLE `empresa` ENABLE KEYS */;
-UNLOCK TABLES;
+DROP TABLE IF EXISTS `informe_bancos_pesca`;
+/*!50001 DROP VIEW IF EXISTS `informe_bancos_pesca`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `informe_bancos_pesca` AS SELECT 
+ 1 AS `id_banco_pesca`,
+ 1 AS `fecha`,
+ 1 AS `id_barco`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Table structure for table `medicion`
+--
+
+DROP TABLE IF EXISTS `medicion`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `medicion` (
+  `id_medicion` int(11) NOT NULL AUTO_INCREMENT,
+  `fk_derrotero` int(11) NOT NULL,
+  `posicion` point NOT NULL,
+  `datos_sensores` json DEFAULT NULL,
+  `fecha` datetime NOT NULL,
+  PRIMARY KEY (`id_medicion`),
+  KEY `medicion_derroteroFK` (`fk_derrotero`),
+  CONSTRAINT `medicion_derroteroFK` FOREIGN KEY (`fk_derrotero`) REFERENCES `derrotero` (`id_derrotero`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Table structure for table `pescado`
@@ -148,15 +155,6 @@ CREATE TABLE `pescado` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `pescado`
---
-
-LOCK TABLES `pescado` WRITE;
-/*!40000 ALTER TABLE `pescado` DISABLE KEYS */;
-/*!40000 ALTER TABLE `pescado` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `puerto`
 --
 
@@ -166,19 +164,10 @@ DROP TABLE IF EXISTS `puerto`;
 CREATE TABLE `puerto` (
   `id_puerto` int(11) NOT NULL AUTO_INCREMENT,
   `ciudad` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `poligono` json NOT NULL,
+  `region` polygon NOT NULL,
   PRIMARY KEY (`id_puerto`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `puerto`
---
-
-LOCK TABLES `puerto` WRITE;
-/*!40000 ALTER TABLE `puerto` DISABLE KEYS */;
-/*!40000 ALTER TABLE `puerto` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `tipo_pescado`
@@ -195,17 +184,111 @@ CREATE TABLE `tipo_pescado` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `tipo_pescado`
---
-
-LOCK TABLES `tipo_pescado` WRITE;
-/*!40000 ALTER TABLE `tipo_pescado` DISABLE KEYS */;
-/*!40000 ALTER TABLE `tipo_pescado` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Dumping routines for database 'Barcos'
 --
+/*!50003 DROP FUNCTION IF EXISTS `cantidad_barcos_tiempo_desviado` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE  FUNCTION `cantidad_barcos_tiempo_desviado`() RETURNS int(11)
+BEGIN
+	DECLARE cantidad INT;
+
+	SELECT COUNT(b.id_barco)
+	FROM barco b
+	WHERE EXISTS (
+		SELECT *
+		FROM derrotero d
+		WHERE d.fk_barco = b.id_barco
+			AND ABS(TIMESTAMPDIFF(SECOND, d.fecha_salida, d.fecha_arribo_estim) - TIMESTAMPDIFF(SECOND, d.fecha_salida, d.fecha_arribo)) 
+				/ TIMESTAMPDIFF(SECOND, d.fecha_salida, d.fecha_arribo_estim) > 0.1)
+	INTO cantidad;
+
+	RETURN cantidad;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `llegaron_mdq` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE  FUNCTION `llegaron_mdq`() RETURNS int(11)
+BEGIN
+	DECLARE puerto_mdq POLYGON;
+	DECLARE cantidad INT;
+
+	SELECT region
+	FROM puerto
+	WHERE ciudad = 'Mar del Plata'
+	INTO puerto_mdq;
+
+	SELECT COUNT(b.id_barco)
+	FROM barco b
+	WHERE EXISTS (
+		SELECT *
+		FROM derrotero d
+		INNER JOIN medicion m ON m.fk_derrotero = d.id_derrotero
+		WHERE d.fk_barco = b.id_barco AND ST_WITHIN(m.posicion, puerto_mdq))
+	INTO cantidad;
+
+	RETURN cantidad;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+
+--
+-- Final view structure for view `barcos_consumo_excesivo`
+--
+
+/*!50001 DROP VIEW IF EXISTS `barcos_consumo_excesivo`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013  SQL SECURITY DEFINER */
+/*!50001 VIEW `barcos_consumo_excesivo` AS select `b`.`id_barco` AS `id_barco` from (`barco` `b` join `derrotero` `d` on((`d`.`fk_barco` = `b`.`id_barco`))) where ((`d`.`id_derrotero` = (select `d2`.`id_derrotero` from `derrotero` `d2` where (`d2`.`fk_barco` = `b`.`id_barco`) order by `d2`.`fecha_salida` limit 1)) and ((select avg(json_unquote(json_extract(`m`.`datos_sensores`,'$.consumo'))) from `medicion` `m` where (`m`.`fk_derrotero` = `d`.`id_derrotero`)) > (`b`.`consumo_promedio` * 1.1))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `informe_bancos_pesca`
+--
+
+/*!50001 DROP VIEW IF EXISTS `informe_bancos_pesca`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013  SQL SECURITY DEFINER */
+/*!50001 VIEW `informe_bancos_pesca` AS select `bp`.`id_banco_pesca` AS `id_banco_pesca`,`m`.`fecha` AS `fecha`,`d`.`fk_barco` AS `id_barco` from ((`banco_pesca` `bp` join `medicion` `m` on(st_within(`m`.`posicion`,`bp`.`region`))) join `derrotero` `d` on((`d`.`id_derrotero` = `m`.`fk_derrotero`))) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -216,4 +299,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-02 19:35:43
+-- Dump completed on 2019-12-10 15:06:18
