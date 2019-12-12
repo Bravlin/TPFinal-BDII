@@ -57,6 +57,11 @@ L.geoJSON(point2).addTo(map);
 L.geoJSON(point3).addTo(map);
 L.geoJSON(myLines).addTo(map);
 
+map.on("contextmenu", function (event) {
+    console.log("user right-clicked on map coordinates: " + event.latlng.toString());
+    L.marker(event.latlng).addTo(map);
+});
+
 function consulta1() {
     fetch('/consultas/1')
         .then(response => {

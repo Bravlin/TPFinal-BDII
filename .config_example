@@ -4,7 +4,7 @@
         "user": "username",
         "password": "password",
         "database": "database"
-    }
+    },
     "server": {
         "host": "localhost",
         "port": 5000

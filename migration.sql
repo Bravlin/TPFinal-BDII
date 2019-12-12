@@ -26,8 +26,18 @@ CREATE TABLE `banco_pesca` (
   `id_banco_pesca` int(11) NOT NULL AUTO_INCREMENT,
   `region` polygon NOT NULL,
   PRIMARY KEY (`id_banco_pesca`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `banco_pesca`
+--
+
+LOCK TABLES `banco_pesca` WRITE;
+/*!40000 ALTER TABLE `banco_pesca` DISABLE KEYS */;
+INSERT INTO `banco_pesca` VALUES (4,_binary '\0\0\0\0\0\0\0\0\0\0\0\0\0�e\�?>C�\��B:M�]n0\�aCC��?��wM��1\0\�HC�\"\�{�M�ę_\�BC��\�e�\�M��e\�?>C�\��B:M�'),(5,_binary '\0\0\0\0\0\0\0\0\0\0\0\0\0�\�X�y:?�\�T2\0T\�H��\�X�y:?�\�T2\0T\�H�j>\"��>��\���\�H�j>\"��>��\���\�H��\�X�y:?�\�T2\0T\�H�');
+/*!40000 ALTER TABLE `banco_pesca` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `barco`
@@ -47,8 +57,18 @@ CREATE TABLE `barco` (
   PRIMARY KEY (`id_barco`),
   KEY `barco_empresaFK` (`fk_empresa`),
   CONSTRAINT `barco_empresaFK` FOREIGN KEY (`fk_empresa`) REFERENCES `empresa` (`id_empresa`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `barco`
+--
+
+LOCK TABLES `barco` WRITE;
+/*!40000 ALTER TABLE `barco` DISABLE KEYS */;
+INSERT INTO `barco` VALUES (1,1,20,30,100,1000,35),(2,2,15,25,85,850,25);
+/*!40000 ALTER TABLE `barco` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Temporary table structure for view `barcos_consumo_excesivo`
@@ -90,6 +110,15 @@ CREATE TABLE `derrotero` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Dumping data for table `derrotero`
+--
+
+LOCK TABLES `derrotero` WRITE;
+/*!40000 ALTER TABLE `derrotero` DISABLE KEYS */;
+/*!40000 ALTER TABLE `derrotero` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `empresa`
 --
 
@@ -100,8 +129,18 @@ CREATE TABLE `empresa` (
   `id_empresa` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id_empresa`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `empresa`
+--
+
+LOCK TABLES `empresa` WRITE;
+/*!40000 ALTER TABLE `empresa` DISABLE KEYS */;
+INSERT INTO `empresa` VALUES (1,'\'Pescados del Sur\''),(2,'\'Campagnola Salados\'');
+/*!40000 ALTER TABLE `empresa` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Temporary table structure for view `informe_bancos_pesca`
@@ -131,10 +170,19 @@ CREATE TABLE `medicion` (
   `datos_sensores` json DEFAULT NULL,
   `fecha` datetime NOT NULL,
   PRIMARY KEY (`id_medicion`),
-  KEY `medicion_derroteroFK` (`fk_derrotero`),
-  CONSTRAINT `medicion_derroteroFK` FOREIGN KEY (`fk_derrotero`) REFERENCES `derrotero` (`id_derrotero`)
+  KEY `datos_sensor_derroteroFK` (`fk_derrotero`),
+  CONSTRAINT `datos_sensor_derroteroFK` FOREIGN KEY (`fk_derrotero`) REFERENCES `derrotero` (`id_derrotero`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `medicion`
+--
+
+LOCK TABLES `medicion` WRITE;
+/*!40000 ALTER TABLE `medicion` DISABLE KEYS */;
+/*!40000 ALTER TABLE `medicion` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `pescado`
@@ -145,14 +193,21 @@ DROP TABLE IF EXISTS `pescado`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `pescado` (
   `fk_derrotero` int(11) NOT NULL,
-  `fk_tipo` int(11) NOT NULL,
   `cantidad` float NOT NULL,
-  PRIMARY KEY (`fk_derrotero`,`fk_tipo`),
-  KEY `pescado_tipoFK` (`fk_tipo`),
-  CONSTRAINT `pescado_derroteroFK` FOREIGN KEY (`fk_derrotero`) REFERENCES `derrotero` (`id_derrotero`),
-  CONSTRAINT `pescado_tipoFK` FOREIGN KEY (`fk_tipo`) REFERENCES `tipo_pescado` (`id_tipo_pescado`)
+  `tipo` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`fk_derrotero`),
+  CONSTRAINT `pescado_derroteroFK` FOREIGN KEY (`fk_derrotero`) REFERENCES `derrotero` (`id_derrotero`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `pescado`
+--
+
+LOCK TABLES `pescado` WRITE;
+/*!40000 ALTER TABLE `pescado` DISABLE KEYS */;
+/*!40000 ALTER TABLE `pescado` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Table structure for table `puerto`
@@ -166,22 +221,18 @@ CREATE TABLE `puerto` (
   `ciudad` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `region` polygon NOT NULL,
   PRIMARY KEY (`id_puerto`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Table structure for table `tipo_pescado`
+-- Dumping data for table `puerto`
 --
 
-DROP TABLE IF EXISTS `tipo_pescado`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `tipo_pescado` (
-  `id_tipo_pescado` int(11) NOT NULL AUTO_INCREMENT,
-  `tipo` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  PRIMARY KEY (`id_tipo_pescado`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
+LOCK TABLES `puerto` WRITE;
+/*!40000 ALTER TABLE `puerto` DISABLE KEYS */;
+INSERT INTO `puerto` VALUES (1,'Mar del Plata',_binary '\0\0\0\0\0\0\0\0\0\0\0\0\0�\�<C�؂\�C\�L�7߈\�YC��H\�\0\�L�,F]k\�C�#M�<\�L��Pk�wC�`\��\�\�L��\\\Z��C�l� [\�L��\�<C�؂\�C\�L�'),(2,'Necochea',_binary '\0\0\0\0\0\0\0\0\0\0\0\0\0�L!IC��\�\�%�[M�)w�\�IC�\�JU[M�C\0p\�IC��\�I`sZM�\�l\�%�IC�\0\�4ZM�g�E(�JC�\�%qVDYM�����\�IC�\�9x&4YM�\�\�+\�IC��[\�JZM�)w�\�IC�c(\'\�UZM��U]IC���?8[M�bf�\�(IC�\�n�\�\\[M��L!IC��\�\�%�[M�'),(3,'Punta Alta',_binary '\0\0\0\0\0\0\0\0\0\0\0\0\0\�|��\�qC�\r4�s�\rO�\�\�uS\�qC��\���\rO�y:W�rC�]R�\�\rO��<֌rC�\n�\�O�m:�YrC��\�v��O�&\�\�s|rC��\���\rO�\�|��\�qC�\r4�s�\rO�');
+/*!40000 ALTER TABLE `puerto` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Dumping routines for database 'Barcos'
@@ -299,4 +350,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-10 15:06:18
+-- Dump completed on 2019-12-12 17:19:27
