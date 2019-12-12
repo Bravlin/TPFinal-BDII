@@ -26,7 +26,7 @@ CREATE TABLE `banco_pesca` (
   `id_banco_pesca` int(11) NOT NULL AUTO_INCREMENT,
   `region` polygon NOT NULL,
   PRIMARY KEY (`id_banco_pesca`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -35,7 +35,7 @@ CREATE TABLE `banco_pesca` (
 
 LOCK TABLES `banco_pesca` WRITE;
 /*!40000 ALTER TABLE `banco_pesca` DISABLE KEYS */;
-INSERT INTO `banco_pesca` VALUES (4,_binary '\0\0\0\0\0\0\0\0\0\0\0\0\0�e\�?>C�\��B:M�]n0\�aCC��?��wM��1\0\�HC�\"\�{�M�ę_\�BC��\�e�\�M��e\�?>C�\��B:M�'),(5,_binary '\0\0\0\0\0\0\0\0\0\0\0\0\0�\�X�y:?�\�T2\0T\�H��\�X�y:?�\�T2\0T\�H�j>\"��>��\���\�H�j>\"��>��\���\�H��\�X�y:?�\�T2\0T\�H�');
+INSERT INTO `banco_pesca` VALUES (10,_binary '\0\0\0\0\0\0\0\0\0\0\0\0\0\��B:M��e\�?>C��?��wM�]n0\�aCC�\"\�{�M��1\0\�HC��\�e�\�M�ę_\�BC�\��B:M��e\�?>C�'),(11,_binary '\0\0\0\0\0\0\0\0\0\0\0\0\0Lp\�\�\�H�}iƲ>���X���H�EF$a�>�;���;�H��\��D?��#���\�H�\�O�}:B?�Lp\�\�\�H�}iƲ>�');
 /*!40000 ALTER TABLE `banco_pesca` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -97,8 +97,6 @@ CREATE TABLE `derrotero` (
   `puerto_arribo` int(11) NOT NULL,
   `fecha_arribo_estim` datetime NOT NULL,
   `fecha_arribo` datetime DEFAULT NULL,
-  `puntos_viaje` json NOT NULL,
-  `trayecto_real` json DEFAULT NULL,
   PRIMARY KEY (`id_derrotero`),
   KEY `barco_derrotero_FK` (`fk_barco`),
   KEY `salida_FK_1` (`puerto_salida`),
@@ -106,7 +104,7 @@ CREATE TABLE `derrotero` (
   CONSTRAINT `arribo_FK_2` FOREIGN KEY (`puerto_arribo`) REFERENCES `puerto` (`id_puerto`),
   CONSTRAINT `barco_derrotero_FK` FOREIGN KEY (`fk_barco`) REFERENCES `barco` (`id_barco`),
   CONSTRAINT `salida_FK_1` FOREIGN KEY (`puerto_salida`) REFERENCES `puerto` (`id_puerto`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -115,6 +113,7 @@ CREATE TABLE `derrotero` (
 
 LOCK TABLES `derrotero` WRITE;
 /*!40000 ALTER TABLE `derrotero` DISABLE KEYS */;
+INSERT INTO `derrotero` VALUES (1,1,1,'2019-12-12 12:12:00',1,'2019-12-19 19:00:00',NULL);
 /*!40000 ALTER TABLE `derrotero` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -172,7 +171,7 @@ CREATE TABLE `medicion` (
   PRIMARY KEY (`id_medicion`),
   KEY `datos_sensor_derroteroFK` (`fk_derrotero`),
   CONSTRAINT `datos_sensor_derroteroFK` FOREIGN KEY (`fk_derrotero`) REFERENCES `derrotero` (`id_derrotero`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -181,6 +180,7 @@ CREATE TABLE `medicion` (
 
 LOCK TABLES `medicion` WRITE;
 /*!40000 ALTER TABLE `medicion` DISABLE KEYS */;
+INSERT INTO `medicion` VALUES (3,1,_binary '\0\0\0\0\0\0\0\�ECƣ\�L���\�\�C�','{\"consumo\": 0}','2019-12-12 12:12:00'),(4,1,_binary '\0\0\0\0\0\0\0���z\�L���\�\�C�','{\"consumo\": 20}','2019-12-12 12:35:00'),(5,1,_binary '\0\0\0\0\0\0\0\�\��7CK�]���2	B�','{\"consumo\": 50}','2019-12-13 18:00:00'),(6,1,_binary '\0\0\0\0\0\0\0\�|y�\�H�\�\�$�4?�','{\"consumo\": 5}','2019-12-15 21:00:00'),(7,1,_binary '\0\0\0\0\0\0\0	\��K��\�\n}� B�','{\"consumo\": 40}','2019-12-17 21:50:00'),(8,1,_binary '\0\0\0\0\0\0\08��+\�\�L�zZ��C�','{\"consumo\": 0}','2019-12-19 23:00:00');
 /*!40000 ALTER TABLE `medicion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -230,8 +230,36 @@ CREATE TABLE `puerto` (
 
 LOCK TABLES `puerto` WRITE;
 /*!40000 ALTER TABLE `puerto` DISABLE KEYS */;
-INSERT INTO `puerto` VALUES (1,'Mar del Plata',_binary '\0\0\0\0\0\0\0\0\0\0\0\0\0�\�<C�؂\�C\�L�7߈\�YC��H\�\0\�L�,F]k\�C�#M�<\�L��Pk�wC�`\��\�\�L��\\\Z��C�l� [\�L��\�<C�؂\�C\�L�'),(2,'Necochea',_binary '\0\0\0\0\0\0\0\0\0\0\0\0\0�L!IC��\�\�%�[M�)w�\�IC�\�JU[M�C\0p\�IC��\�I`sZM�\�l\�%�IC�\0\�4ZM�g�E(�JC�\�%qVDYM�����\�IC�\�9x&4YM�\�\�+\�IC��[\�JZM�)w�\�IC�c(\'\�UZM��U]IC���?8[M�bf�\�(IC�\�n�\�\\[M��L!IC��\�\�%�[M�'),(3,'Punta Alta',_binary '\0\0\0\0\0\0\0\0\0\0\0\0\0\�|��\�qC�\r4�s�\rO�\�\�uS\�qC��\���\rO�y:W�rC�]R�\�\rO��<֌rC�\n�\�O�m:�YrC��\�v��O�&\�\�s|rC��\���\rO�\�|��\�qC�\r4�s�\rO�');
+INSERT INTO `puerto` VALUES (1,'Mar del Plata',_binary '\0\0\0\0\0\0\0\0\0\0\0\0\0؂\�C\�L��\�<C��H\�\0\�L�7߈\�YC�#M�<\�L�,F]k\�C�`\��\�\�L��Pk�wC�l� [\�L��\\\Z��C�؂\�C\�L��\�<C�'),(2,'Necochea',_binary '\0\0\0\0\0\0\0\0\0\0\0\0\0�\�\�%�[M��L!IC�\�JU[M�)w�\�IC��\�I`sZM�C\0p\�IC�\0\�4ZM�\�l\�%�IC�\�%qVDYM�g�E(�JC�\�9x&4YM�����\�IC��[\�JZM�\�\�+\�IC�c(\'\�UZM�)w�\�IC���?8[M��U]IC�\�n�\�\\[M�bf�\�(IC��\�\�%�[M��L!IC�'),(3,'Punta Alta',_binary '\0\0\0\0\0\0\0\0\0\0\0\0\0\r4�s�\rO�\�|��\�qC��\���\rO�\�\�uS\�qC�]R�\�\rO�y:W�rC�\n�\�O��<֌rC��\�v��O�m:�YrC��\���\rO�&\�\�s|rC�\r4�s�\rO�\�|��\�qC�');
 /*!40000 ALTER TABLE `puerto` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `punto_derrotero`
+--
+
+DROP TABLE IF EXISTS `punto_derrotero`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `punto_derrotero` (
+  `id_punto_derrotero` int(11) NOT NULL AUTO_INCREMENT,
+  `fk_derrotero` int(11) NOT NULL,
+  `coordenadas` point NOT NULL,
+  `fecha` datetime NOT NULL,
+  PRIMARY KEY (`id_punto_derrotero`),
+  KEY `punto_derrotero_FK` (`fk_derrotero`),
+  CONSTRAINT `punto_derrotero_FK` FOREIGN KEY (`fk_derrotero`) REFERENCES `derrotero` (`id_derrotero`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `punto_derrotero`
+--
+
+LOCK TABLES `punto_derrotero` WRITE;
+/*!40000 ALTER TABLE `punto_derrotero` DISABLE KEYS */;
+INSERT INTO `punto_derrotero` VALUES (3,1,_binary '\0\0\0\0\0\0\0\�ECƣ\�L���\�\�C�','2019-12-12 12:12:00'),(4,1,_binary '\0\0\0\0\0\0\0n��\�V\�L�5�;�C�','2019-12-12 12:30:00'),(5,1,_binary '\0\0\0\0\0\0\0!\���cK�\��R�1�A�','2019-12-13 12:30:00'),(6,1,_binary '\0\0\0\0\0\0\0u�w\�H�\���K��>�','2019-12-15 17:30:00'),(8,1,_binary '\0\0\0\0\0\0\0`[?�gK�F?\ZN�!B�','2019-12-17 19:30:00'),(9,1,_binary '\0\0\0\0\0\0\0f���\�\�L��9>Z�C�','2019-12-19 22:30:00');
+/*!40000 ALTER TABLE `punto_derrotero` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -350,4 +378,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-12 17:19:27
+-- Dump completed on 2019-12-12 20:30:59

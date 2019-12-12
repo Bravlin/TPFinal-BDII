@@ -1,5 +1,3 @@
-//const L = require('leaflet');
-
 var animateButton = function(e) {
     e.preventDefault;
     //reset animation
@@ -24,39 +22,6 @@ L.tileLayer('https://{s}.tile.openstreetmap.fr/osmfr/{z}/{x}/{y}.png', {
     attribution: '&copy; Openstreetmap France | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(map);
     
-var point1 = {
-    "type": "Point",
-    "coordinates": [-38.07302305627273, -57.37611337325146]
-};
-var point2 = {
-    "type": "Point",
-    "coordinates": [-37.239601347108, -54.28511191750803]
-};
-var point3 = {
-    "type": "Point",
-    "coordinates": [-37.11960288547337, -50.32288635380249]
-};
-var puerto = { 
-    "type": "Polygon",
-    "coordinates": [[
-        [-104.05, 48.99],
-        [-97.22,  48.98],
-        [-96.58,  45.94],
-        [-104.03, 45.94],
-        [-104.05, 48.99]
-    ]]  
-};
-var myLines = [{
-    "type": "LineString",
-    "coordinates": [[-57.37611337325146, -38.07302305627273], [-54.28511191750803, -37.239601347108], [-50.32288635380249, -37.11960288547337],[-57.37611337325146, -38.07302305627273]]
-    }];
-
-L.geoJSON(puerto).addTo(map);
-L.geoJSON(point1).addTo(map);
-L.geoJSON(point2).addTo(map);
-L.geoJSON(point3).addTo(map);
-L.geoJSON(myLines).addTo(map);
-
 map.on("contextmenu", function (event) {
     console.log("user right-clicked on map coordinates: " + event.latlng.toString());
     L.marker(event.latlng).addTo(map);
@@ -74,4 +39,119 @@ function consulta1() {
             alert('Hubo un error al tratar de cumplir la petición.')
         });
 }
+function consulta2() {
+    fetch('/consultas/2')
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('parrafo').innerHTML = JSON.stringify(data);
+        })
+        .catch(error => {
+            alert('Hubo un error al tratar de cumplir la petición.')
+        });
+}
+function consulta3() {
+    fetch('/consultas/3')
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('parrafo').innerHTML = JSON.stringify(data);
+        })
+        .catch(error => {
+            alert('Hubo un error al tratar de cumplir la petición.')
+        });
+}
+function consulta4() {
+    fetch('/consultas/4')
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('parrafo').innerHTML = JSON.stringify(data);
+        })
+        .catch(error => {
+            alert('Hubo un error al tratar de cumplir la petición.')
+        });
+}
+function consulta5() {
+    fetch('/consultas/5')
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('parrafo').innerHTML = JSON.stringify(data);
+        })
+        .catch(error => {
+            alert('Hubo un error al tratar de cumplir la petición.')
+        });
+}
+function consulta6() {
+    fetch('/consultas/6')
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('parrafo').innerHTML = JSON.stringify(data);
+        })
+        .catch(error => {
+            alert('Hubo un error al tratar de cumplir la petición.')
+        });
+}
+function consulta7() {
+    fetch('/consultas/7')
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('parrafo').innerHTML = JSON.stringify(data);
+        })
+        .catch(error => {
+            alert('Hubo un error al tratar de cumplir la petición.')
+        });
+}
+function consulta8() {
+    fetch('/consultas/8')
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            document.getElementById('parrafo').innerHTML = JSON.stringify(data);
+        })
+        .catch(error => {
+            alert('Hubo un error al tratar de cumplir la petición.')
+        });
+}
 
+function getPuertos() {
+    fetch('/puertos')
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            data.forEach(harbour => {
+                L.geoJSON(JSON.parse(harbour.geo)).addTo(map);
+            });
+        })
+        .catch(error => {
+            console.log(error);
+            alert('Hubo un error al tratar de cumplir la petición.')
+        });
+
+    fetch('/bancospesca')
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            data.forEach(bench => {
+                L.geoJSON(JSON.parse(bench.geo)).addTo(map);
+            });
+        })
+        .catch(error => {
+            console.log(error);
+            alert('Hubo un error al tratar de cumplir la petición.')
+        });
+};
+
+getPuertos();
