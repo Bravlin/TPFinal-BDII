@@ -11,11 +11,24 @@ function help() {
     let output =
         "Final Project for the course Databases II\n\n"
         + "Commands:\n\n"
-        + "db create        create the database with the configured name\n"
-        + "db migrate       migrate the database structure\n"
-        + "db ping          check database connection\n\n"
-        + "help             shows available commands\n";
+        + "db create        creates the database with the configured name\n"
+        + "db migrate       migrates the database structure\n"
+        + "db ping          checks database connection\n\n"
+        + "help             shows available commands\n\n"
+        + "server start     starts server with the configured parameters\n\n";
     console.log(output);
+}
+
+function executeCommand(commands, arg) {
+    if (!(arg in commands))
+        console.log('Invalid command.');
+    else
+        try {
+            commands[arg]();
+        }
+        catch (err) {
+            console.log(err);
+        }
 }
 
 const commands = {
@@ -31,12 +44,7 @@ const commands = {
                 mysql_handler.pingDatabase(config.mysql.host, config.mysql.user, config.mysql.password);
             }
         };
-        try {
-            subdb[args[3]]();
-        }
-        catch (err) {
-            console.log('Invalid command.');
-        }
+        executeCommand(subdb, args[3]);
     },
     'help': help,
     'server': () => {
@@ -46,18 +54,8 @@ const commands = {
                 server.startServer(config.server.host, config.server.port, db);
             }
         };
-        try {
-            subserver[args[3]]();
-        }
-        catch (err) {
-            console.log('Invalid command.');
-        }
+        executeCommand(subserver, args[3]);
     }
 }
 
-try {
-    commands[args[2]]();
-}
-catch (err) {
-    console.log('Invalid command.');
-}
+executeCommand(commands, args[2]);
