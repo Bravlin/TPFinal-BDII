@@ -39,6 +39,7 @@ function consulta1() {
             alert('Hubo un error al tratar de cumplir la petición.')
         });
 }
+
 function consulta2() {
     fetch('/consultas/2')
         .then(response => {
@@ -51,6 +52,7 @@ function consulta2() {
             alert('Hubo un error al tratar de cumplir la petición.')
         });
 }
+
 function consulta3() {
     fetch('/consultas/3')
         .then(response => {
@@ -63,6 +65,7 @@ function consulta3() {
             alert('Hubo un error al tratar de cumplir la petición.')
         });
 }
+
 function consulta4() {
     fetch('/consultas/4')
         .then(response => {
@@ -75,6 +78,7 @@ function consulta4() {
             alert('Hubo un error al tratar de cumplir la petición.')
         });
 }
+
 function consulta5() {
     fetch('/consultas/5')
         .then(response => {
@@ -87,6 +91,7 @@ function consulta5() {
             alert('Hubo un error al tratar de cumplir la petición.')
         });
 }
+
 function consulta6() {
     fetch('/consultas/6')
         .then(response => {
@@ -99,6 +104,7 @@ function consulta6() {
             alert('Hubo un error al tratar de cumplir la petición.')
         });
 }
+
 function consulta7() {
     fetch('/consultas/7')
         .then(response => {
@@ -111,6 +117,7 @@ function consulta7() {
             alert('Hubo un error al tratar de cumplir la petición.')
         });
 }
+
 function consulta8() {
     fetch('/consultas/8')
         .then(response => {
@@ -138,7 +145,9 @@ function getPuertos() {
             console.log(error);
             alert('Hubo un error al tratar de cumplir la petición.')
         });
+}
 
+function getBancosPesca() {
     fetch('/bancospesca')
         .then(response => {
             return response.json();
@@ -155,3 +164,4 @@ function getPuertos() {
 };
 
 getPuertos();
+getBancosPesca();

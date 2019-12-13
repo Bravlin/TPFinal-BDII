@@ -104,7 +104,7 @@ CREATE TABLE `derrotero` (
   CONSTRAINT `arribo_FK_2` FOREIGN KEY (`puerto_arribo`) REFERENCES `puerto` (`id_puerto`),
   CONSTRAINT `barco_derrotero_FK` FOREIGN KEY (`fk_barco`) REFERENCES `barco` (`id_barco`),
   CONSTRAINT `salida_FK_1` FOREIGN KEY (`puerto_salida`) REFERENCES `puerto` (`id_puerto`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -265,6 +265,83 @@ UNLOCK TABLES;
 --
 -- Dumping routines for database 'Barcos'
 --
+/*!50003 DROP FUNCTION IF EXISTS `barcos_fuera_puerto` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE  FUNCTION `barcos_fuera_puerto`() RETURNS int(11)
+BEGIN
+	DECLARE cantidad INT;
+
+	SELECT COUNT(id_barco)
+	FROM barco b
+	WHERE EXISTS (
+		SELECT *
+		FROM derrotero d
+		INNER JOIN medicion m ON m.fk_derrotero = d.id_derrotero
+		WHERE d.fk_barco = b.id_barco
+			AND d.fecha_salida = (
+				SELECT MAX(d2.fecha_salida)
+				FROM derrotero d2
+				WHERE d2.fk_barco = b.id_barco)
+			AND m.fecha = (
+				SELECT MAX(m2.fecha)
+				FROM medicion m2
+				WHERE m2.fk_derrotero = d.id_derrotero)
+			AND NOT EXISTS (
+				SELECT *
+				FROM puerto p
+				WHERE ST_WITHIN(m.posicion, p.region)))
+	INTO cantidad;
+
+	RETURN cantidad;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `barcos_latitud_33` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE  FUNCTION `barcos_latitud_33`() RETURNS int(11)
+BEGIN
+	DECLARE cantidad INT;
+
+	SELECT COUNT(id_barco)
+	FROM barco b
+	WHERE (
+			SELECT MAX(ST_Y(m.posicion))
+			FROM derrotero d
+			INNER JOIN medicion m ON m.fk_derrotero = d.id_derrotero
+			WHERE d.fk_barco = b.id_barco) > -33
+		AND (
+			SELECT MIN(ST_Y(m.posicion))
+			FROM derrotero d
+			INNER JOIN medicion m ON m.fk_derrotero = d.id_derrotero
+			WHERE d.fk_barco = b.id_barco) < -33
+	INTO cantidad;
+
+	RETURN cantidad;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP FUNCTION IF EXISTS `cantidad_barcos_tiempo_desviado` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -378,4 +455,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-12 20:30:59
+-- Dump completed on 2019-12-13 16:45:40
