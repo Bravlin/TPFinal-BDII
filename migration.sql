@@ -116,6 +116,28 @@ LOCK TABLES `derrotero` WRITE;
 INSERT INTO `derrotero` VALUES (1,1,1,'2019-12-12 12:12:00',1,'2019-12-19 19:00:00',NULL);
 /*!40000 ALTER TABLE `derrotero` ENABLE KEYS */;
 UNLOCK TABLES;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+/*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER alerta_punto_salteado
+AFTER INSERT ON derrotero
+FOR EACH ROW
+BEGIN
+	IF NEW.fecha_arribo IS NOT NULL THEN
+		CALL insertar_salteados();
+	END IF;
+END */;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 
 --
 -- Table structure for table `empresa`
@@ -137,7 +159,7 @@ CREATE TABLE `empresa` (
 
 LOCK TABLES `empresa` WRITE;
 /*!40000 ALTER TABLE `empresa` DISABLE KEYS */;
-INSERT INTO `empresa` VALUES (1,'\'Pescados del Sur\''),(2,'\'Campagnola Salados\'');
+INSERT INTO `empresa` VALUES (1,'Pescados del Sur'),(2,'Campagnola Salados');
 /*!40000 ALTER TABLE `empresa` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -249,7 +271,7 @@ CREATE TABLE `punto_derrotero` (
   PRIMARY KEY (`id_punto_derrotero`),
   KEY `punto_derrotero_FK` (`fk_derrotero`),
   CONSTRAINT `punto_derrotero_FK` FOREIGN KEY (`fk_derrotero`) REFERENCES `derrotero` (`id_derrotero`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -260,6 +282,35 @@ LOCK TABLES `punto_derrotero` WRITE;
 /*!40000 ALTER TABLE `punto_derrotero` DISABLE KEYS */;
 INSERT INTO `punto_derrotero` VALUES (3,1,_binary '\0\0\0\0\0\0\0\�ECƣ\�L���\�\�C�','2019-12-12 12:12:00'),(4,1,_binary '\0\0\0\0\0\0\0n��\�V\�L�5�;�C�','2019-12-12 12:30:00'),(5,1,_binary '\0\0\0\0\0\0\0!\���cK�\��R�1�A�','2019-12-13 12:30:00'),(6,1,_binary '\0\0\0\0\0\0\0u�w\�H�\���K��>�','2019-12-15 17:30:00'),(8,1,_binary '\0\0\0\0\0\0\0`[?�gK�F?\ZN�!B�','2019-12-17 19:30:00'),(9,1,_binary '\0\0\0\0\0\0\0f���\�\�L��9>Z�C�','2019-12-19 22:30:00');
 /*!40000 ALTER TABLE `punto_derrotero` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `punto_salteado`
+--
+
+DROP TABLE IF EXISTS `punto_salteado`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `punto_salteado` (
+  `id_punto` int(11) NOT NULL,
+  `id_barco` int(11) NOT NULL,
+  `id_derrotero` int(11) NOT NULL,
+  PRIMARY KEY (`id_punto`),
+  KEY `salteado_barcoFK` (`id_barco`),
+  KEY `salteado_derroteroFK` (`id_derrotero`),
+  CONSTRAINT `salteado_barcoFK` FOREIGN KEY (`id_barco`) REFERENCES `barco` (`id_barco`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `salteado_derroteroFK` FOREIGN KEY (`id_derrotero`) REFERENCES `derrotero` (`id_derrotero`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `salteado_puntoFK` FOREIGN KEY (`id_punto`) REFERENCES `punto_derrotero` (`id_punto_derrotero`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `punto_salteado`
+--
+
+LOCK TABLES `punto_salteado` WRITE;
+/*!40000 ALTER TABLE `punto_salteado` DISABLE KEYS */;
+/*!40000 ALTER TABLE `punto_salteado` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -373,6 +424,39 @@ DELIMITER ;
 /*!50003 SET character_set_client  = @saved_cs_client */ ;
 /*!50003 SET character_set_results = @saved_cs_results */ ;
 /*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP FUNCTION IF EXISTS `empresa_mas_merluza` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE  FUNCTION `empresa_mas_merluza`() RETURNS int(11)
+BEGIN
+	DECLARE empresa INT;
+	DECLARE cantidad FLOAT;
+
+	SELECT e.id_empresa, SUM(p.cantidad) AS cantidad
+	FROM empresa e
+		INNER JOIN barco b ON b.fk_empresa = e.id_empresa
+		INNER JOIN derrotero d ON d.fk_barco = b.id_barco
+		INNER JOIN pescado p ON p.fk_derrotero = d.id_derrotero
+	WHERE d.fecha_arribo > (NOW() - INTERVAL 7 DAY) AND p.tipo='merluza' 
+	GROUP BY e.id_empresa
+	ORDER BY cantidad DESC
+	LIMIT 1
+	INTO empresa, cantidad;
+
+	RETURN empresa;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!50003 DROP FUNCTION IF EXISTS `llegaron_mdq` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
 /*!50003 SET @saved_cs_results     = @@character_set_results */ ;
@@ -403,6 +487,42 @@ BEGIN
 	INTO cantidad;
 
 	RETURN cantidad;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
+/*!50003 DROP PROCEDURE IF EXISTS `insertar_salteados` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE  PROCEDURE `insertar_salteados`(
+	id_der INT
+)
+BEGIN
+	DECLARE id_barco INT;
+
+	SELECT fk_barco
+	FROM derrotero
+	WHERE id_derrotero = id_der
+	INTO id_barco;
+
+	INSERT INTO punto_salteado
+	SELECT pd.id_punto_derrotero, id_barco, id_der
+	FROM punto_derrotero pd
+	WHERE pd.fk_derrotero = id_der
+		AND NOT EXISTS (
+			SELECT *
+			FROM medicion m
+			WHERE m.fk_derrotero = id_der
+				AND ST_DISTANCE_SPHERE(pd.coordenadas, m.posicion) <= 1852);
 END ;;
 DELIMITER ;
 /*!50003 SET sql_mode              = @saved_sql_mode */ ;
@@ -455,4 +575,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-13 16:45:40
+-- Dump completed on 2019-12-15 12:18:05
