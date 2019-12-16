@@ -25,7 +25,8 @@ DROP TABLE IF EXISTS `banco_pesca`;
 CREATE TABLE `banco_pesca` (
   `id_banco_pesca` int(11) NOT NULL AUTO_INCREMENT,
   `region` polygon NOT NULL,
-  PRIMARY KEY (`id_banco_pesca`)
+  PRIMARY KEY (`id_banco_pesca`),
+  SPATIAL KEY `region` (`region`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -126,11 +127,11 @@ UNLOCK TABLES;
 /*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_ENGINE_SUBSTITUTION' */ ;
 DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 */ /*!50003 TRIGGER alerta_punto_salteado
-AFTER INSERT ON derrotero
+AFTER UPDATE ON derrotero
 FOR EACH ROW
 BEGIN
-	IF NEW.fecha_arribo IS NOT NULL THEN
-		CALL insertar_salteados();
+	IF OLD.fecha_arribo IS NULL AND NEW.fecha_arribo IS NOT NULL THEN
+		CALL insertar_salteados(NEW.id_derrotero);
 	END IF;
 END */;;
 DELIMITER ;
@@ -192,6 +193,7 @@ CREATE TABLE `medicion` (
   `fecha` datetime NOT NULL,
   PRIMARY KEY (`id_medicion`),
   KEY `datos_sensor_derroteroFK` (`fk_derrotero`),
+  SPATIAL KEY `posicion` (`posicion`),
   CONSTRAINT `datos_sensor_derroteroFK` FOREIGN KEY (`fk_derrotero`) REFERENCES `derrotero` (`id_derrotero`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -218,6 +220,7 @@ CREATE TABLE `pescado` (
   `cantidad` float NOT NULL,
   `tipo` varchar(25) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`fk_derrotero`),
+  KEY `pescado_tipo_IDX` (`tipo`) USING BTREE,
   CONSTRAINT `pescado_derroteroFK` FOREIGN KEY (`fk_derrotero`) REFERENCES `derrotero` (`id_derrotero`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -242,7 +245,8 @@ CREATE TABLE `puerto` (
   `id_puerto` int(11) NOT NULL AUTO_INCREMENT,
   `ciudad` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `region` polygon NOT NULL,
-  PRIMARY KEY (`id_puerto`)
+  PRIMARY KEY (`id_puerto`),
+  SPATIAL KEY `region` (`region`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -270,8 +274,9 @@ CREATE TABLE `punto_derrotero` (
   `fecha` datetime NOT NULL,
   PRIMARY KEY (`id_punto_derrotero`),
   KEY `punto_derrotero_FK` (`fk_derrotero`),
+  SPATIAL KEY `coordenadas` (`coordenadas`),
   CONSTRAINT `punto_derrotero_FK` FOREIGN KEY (`fk_derrotero`) REFERENCES `derrotero` (`id_derrotero`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -575,4 +580,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-15 12:41:36
+-- Dump completed on 2019-12-15 21:16:31

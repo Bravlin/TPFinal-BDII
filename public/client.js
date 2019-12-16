@@ -33,7 +33,12 @@ function consulta1() {
             return response.json();
         })
         .then(data => {
-            document.getElementById('parrafo').innerHTML = JSON.stringify(data);
+            let message = '';
+            data.forEach(row => {
+                let date = Date(row.fecha);
+                message += 'Banco: ' + row.id_banco_pesca + ' - Fecha: ' + date + ' - Barco: ' + row.id_barco + '<br>';
+            });
+            document.getElementById('parrafo').innerHTML = message;
         })
         .catch(error => {
             alert('Hubo un error al tratar de cumplir la petición.')
@@ -46,7 +51,7 @@ function consulta2() {
             return response.json();
         })
         .then(data => {
-            document.getElementById('parrafo').innerHTML = JSON.stringify(data);
+            document.getElementById('parrafo').innerHTML = data.result;
         })
         .catch(error => {
             alert('Hubo un error al tratar de cumplir la petición.')
@@ -59,7 +64,7 @@ function consulta3() {
             return response.json();
         })
         .then(data => {
-            document.getElementById('parrafo').innerHTML = JSON.stringify(data);
+            document.getElementById('parrafo').innerHTML = data.result;
         })
         .catch(error => {
             alert('Hubo un error al tratar de cumplir la petición.')
@@ -72,7 +77,11 @@ function consulta4() {
             return response.json();
         })
         .then(data => {
-            document.getElementById('parrafo').innerHTML = JSON.stringify(data);
+            let message = '';
+            data.forEach(row => {
+                message += 'Punto asociado: ' + row.id_punto + ' - Barco: ' + row.id_barco + ' - Derrotero: ' + row.id_derrotero + '<br>';
+            });
+            document.getElementById('parrafo').innerHTML = message;
         })
         .catch(error => {
             alert('Hubo un error al tratar de cumplir la petición.')
@@ -85,7 +94,7 @@ function consulta5() {
             return response.json();
         })
         .then(data => {
-            document.getElementById('parrafo').innerHTML = JSON.stringify(data);
+            document.getElementById('parrafo').innerHTML = data.result;
         })
         .catch(error => {
             alert('Hubo un error al tratar de cumplir la petición.')
@@ -98,7 +107,7 @@ function consulta6() {
             return response.json();
         })
         .then(data => {
-            document.getElementById('parrafo').innerHTML = JSON.stringify(data);
+            document.getElementById('parrafo').innerHTML = data.result;
         })
         .catch(error => {
             alert('Hubo un error al tratar de cumplir la petición.')
@@ -111,7 +120,11 @@ function consulta7() {
             return response.json();
         })
         .then(data => {
-            document.getElementById('parrafo').innerHTML = JSON.stringify(data);
+            let message = '';
+            data.forEach(row => {
+                message += 'Barco: ' + row.id_barco + '<br>';
+            });
+            document.getElementById('parrafo').innerHTML = message;
         })
         .catch(error => {
             alert('Hubo un error al tratar de cumplir la petición.')
@@ -124,7 +137,7 @@ function consulta8() {
             return response.json();
         })
         .then(data => {
-            document.getElementById('parrafo').innerHTML = JSON.stringify(data);
+            document.getElementById('parrafo').innerHTML = 'Empresa: ' + data.result;
         })
         .catch(error => {
             alert('Hubo un error al tratar de cumplir la petición.')

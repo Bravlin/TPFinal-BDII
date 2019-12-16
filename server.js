@@ -16,51 +16,56 @@ module.exports.startServer = (host, port, db) => {
     });
 
     app.get('/consultas/2', (req, res) => {
-        db.query('SELECT * FROM informe_bancos_pesca', (error, results) => {
+        db.query('SELECT barcos_fuera_puerto()', (error, results) => {
             if (error) throw error;
-            res.json(results);
+            var content = {'result': (results[0])['barcos_fuera_puerto()']};
+            res.json(content);
         });
     });
 
     app.get('/consultas/3', (req, res) => {
-        db.query('SELECT * FROM informe_bancos_pesca', (error, results) => {
+        db.query('SELECT cantidad_barcos_tiempo_desviado()', (error, results) => {
             if (error) throw error;
-            res.json(results);
+            var content = {'result': (results[0])['cantidad_barcos_tiempo_desviado()']};
+            res.json(content);
         });
     });
 
     app.get('/consultas/4', (req, res) => {
-        db.query('SELECT * FROM informe_bancos_pesca', (error, results) => {
+        db.query('SELECT * FROM punto_salteado', (error, results) => {
             if (error) throw error;
             res.json(results);
         });
     });
 
     app.get('/consultas/5', (req, res) => {
-        db.query('SELECT * FROM informe_bancos_pesca', (error, results) => {
+        db.query('SELECT llegaron_mdq()', (error, results) => {
             if (error) throw error;
-            res.json(results);
+            var content = {'result': (results[0])['llegaron_mdq()']};
+            res.json(content);
         });
     });
 
     app.get('/consultas/6', (req, res) => {
-        db.query('SELECT * FROM informe_bancos_pesca', (error, results) => {
+        db.query('SELECT barcos_latitud_33()', (error, results) => {
             if (error) throw error;
-            res.json(results);
+            var content = {'result': (results[0])['barcos_latitud_33()']};
+            res.json(content);
         });
     });
 
     app.get('/consultas/7', (req, res) => {
-        db.query('SELECT * FROM informe_bancos_pesca', (error, results) => {
+        db.query('SELECT * FROM barcos_consumo_excesivo', (error, results) => {
             if (error) throw error;
             res.json(results);
         });
     });
 
     app.get('/consultas/8', (req, res) => {
-        db.query('SELECT * FROM informe_bancos_pesca', (error, results) => {
+        db.query('SELECT empresa_mas_merluza()', (error, results) => {
             if (error) throw error;
-            res.json(results);
+            var content = {'result': (results[0])['empresa_mas_merluza()']};
+            res.json(content);
         });
     });
 
