@@ -182,8 +182,17 @@ function getTrayectosDerroteros() {
             return response.json();
         })
         .then(data => {
+            let options = {
+                onEachFeature: function (feature, layer) {
+                    layer.bindPopup('<h1>Derrotero:'+feature.properties['derrotero']+'</h1>');
+                }
+            };
             data.forEach(trajectory => {
-                L.geoJSON(JSON.parse(trajectory.geo)).addTo(map);
+                let gj = JSON.parse(trajectory.geo);
+                gj.properties = {
+                    "derrotero": trajectory.id_derrotero,
+                };
+                L.geoJSON(gj, options).addTo(map);
             });
         })
         .catch(error => {
@@ -198,8 +207,18 @@ function getTrayectosReales() {
             return response.json();
         })
         .then(data => {
+            let options = {
+                color: "#008000",
+                onEachFeature: function (feature, layer) {
+                    layer.bindPopup('<h1>Trayecto:'+feature.properties['trayecto']+'</h1>');
+                }
+            };
             data.forEach(trajectory => {
-                L.geoJSON(JSON.parse(trajectory.geo)).addTo(map);
+                let gj = JSON.parse(trajectory.geo);
+                gj.properties = {
+                    "trayecto": trajectory.id_derrotero,
+                };
+                L.geoJSON(gj, options).addTo(map);
             });
         })
         .catch(error => {
