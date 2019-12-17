@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.28, for Linux (x86_64)
 --
--- Host: localhost    Database: TPFINALBDII
+-- Host: localhost    Database: Barcos
 -- ------------------------------------------------------
 -- Server version	5.7.28-0ubuntu0.18.04.4
 
@@ -321,7 +321,33 @@ INSERT INTO `punto_salteado` VALUES (5,1,1),(6,1,1);
 UNLOCK TABLES;
 
 --
--- Dumping routines for database 'TPFINALBDII'
+-- Temporary table structure for view `trayecto_derrotero`
+--
+
+DROP TABLE IF EXISTS `trayecto_derrotero`;
+/*!50001 DROP VIEW IF EXISTS `trayecto_derrotero`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `trayecto_derrotero` AS SELECT 
+ 1 AS `id_derrotero`,
+ 1 AS `linea`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary table structure for view `trayecto_real`
+--
+
+DROP TABLE IF EXISTS `trayecto_real`;
+/*!50001 DROP VIEW IF EXISTS `trayecto_real`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `trayecto_real` AS SELECT 
+ 1 AS `id_derrotero`,
+ 1 AS `linea`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Dumping routines for database 'Barcos'
 --
 /*!50003 DROP FUNCTION IF EXISTS `barcos_fuera_puerto` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -573,6 +599,42 @@ DELIMITER ;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `trayecto_derrotero`
+--
+
+/*!50001 DROP VIEW IF EXISTS `trayecto_derrotero`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013  SQL SECURITY DEFINER */
+/*!50001 VIEW `trayecto_derrotero` AS select `punto_derrotero`.`fk_derrotero` AS `id_derrotero`,st_geometryfromtext(concat('LINESTRING (',group_concat(concat(st_x(`punto_derrotero`.`coordenadas`),' ',st_y(`punto_derrotero`.`coordenadas`)) separator ', '),')')) AS `linea` from `punto_derrotero` group by `punto_derrotero`.`fk_derrotero` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `trayecto_real`
+--
+
+/*!50001 DROP VIEW IF EXISTS `trayecto_real`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013  SQL SECURITY DEFINER */
+/*!50001 VIEW `trayecto_real` AS select `medicion`.`fk_derrotero` AS `id_derrotero`,st_geometryfromtext(concat('LINESTRING (',group_concat(concat(st_x(`medicion`.`posicion`),' ',st_y(`medicion`.`posicion`)) separator ', '),')')) AS `linea` from `medicion` group by `medicion`.`fk_derrotero` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -583,4 +645,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-17 17:38:55
+-- Dump completed on 2019-12-17 17:44:21
