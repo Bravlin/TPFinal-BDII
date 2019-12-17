@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 5.7.28, for Linux (x86_64)
 --
--- Host: localhost    Database: Barcos
+-- Host: localhost    Database: TPFINALBDII
 -- ------------------------------------------------------
 -- Server version	5.7.28-0ubuntu0.18.04.4
 
@@ -58,7 +58,7 @@ CREATE TABLE `barco` (
   PRIMARY KEY (`id_barco`),
   KEY `barco_empresaFK` (`fk_empresa`),
   CONSTRAINT `barco_empresaFK` FOREIGN KEY (`fk_empresa`) REFERENCES `empresa` (`id_empresa`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -67,7 +67,7 @@ CREATE TABLE `barco` (
 
 LOCK TABLES `barco` WRITE;
 /*!40000 ALTER TABLE `barco` DISABLE KEYS */;
-INSERT INTO `barco` VALUES (1,1,20,30,100,1000,35),(2,2,15,25,85,850,25);
+INSERT INTO `barco` VALUES (1,1,20,30,100,1000,35),(2,2,15,25,85,850,25),(3,2,30,40,150,2000,47);
 /*!40000 ALTER TABLE `barco` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -105,7 +105,7 @@ CREATE TABLE `derrotero` (
   CONSTRAINT `arribo_FK_2` FOREIGN KEY (`puerto_arribo`) REFERENCES `puerto` (`id_puerto`),
   CONSTRAINT `barco_derrotero_FK` FOREIGN KEY (`fk_barco`) REFERENCES `barco` (`id_barco`),
   CONSTRAINT `salida_FK_1` FOREIGN KEY (`puerto_salida`) REFERENCES `puerto` (`id_puerto`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -114,7 +114,7 @@ CREATE TABLE `derrotero` (
 
 LOCK TABLES `derrotero` WRITE;
 /*!40000 ALTER TABLE `derrotero` DISABLE KEYS */;
-INSERT INTO `derrotero` VALUES (1,1,1,'2019-12-12 12:12:00',1,'2019-12-19 19:00:00',NULL);
+INSERT INTO `derrotero` VALUES (1,1,1,'2019-12-12 12:12:00',1,'2019-12-19 22:30:00','2019-12-20 18:00:00'),(2,2,2,'2019-12-17 08:00:00',3,'2019-12-22 15:00:00',NULL),(3,3,2,'2019-12-15 10:00:00',1,'2019-12-17 18:00:00','2019-12-18 16:00:00');
 /*!40000 ALTER TABLE `derrotero` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -195,7 +195,7 @@ CREATE TABLE `medicion` (
   KEY `datos_sensor_derroteroFK` (`fk_derrotero`),
   SPATIAL KEY `posicion` (`posicion`),
   CONSTRAINT `datos_sensor_derroteroFK` FOREIGN KEY (`fk_derrotero`) REFERENCES `derrotero` (`id_derrotero`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -204,7 +204,7 @@ CREATE TABLE `medicion` (
 
 LOCK TABLES `medicion` WRITE;
 /*!40000 ALTER TABLE `medicion` DISABLE KEYS */;
-INSERT INTO `medicion` VALUES (3,1,0x000000000101000000D04543C6A3C44CC09813B4C9E10543C0,'{\"consumo\": 0}','2019-12-12 12:12:00'),(4,1,0x000000000101000000BC96900F7AC24CC08AB0E1E9950443C0,'{\"consumo\": 20}','2019-12-12 12:35:00'),(5,1,0x00000000010100000007D0EFFB37434BC05DFA97A4320942C0,'{\"consumo\": 50}','2019-12-13 18:00:00'),(6,1,0x000000000101000000C47C7901F6E148C0E199D024B1343FC0,'{\"consumo\": 5}','2019-12-15 21:00:00'),(7,1,0x0000000001010000000F09DFFB1B144BC09AED0A7DB02042C0,'{\"consumo\": 40}','2019-12-17 21:50:00'),(8,1,0x00000000010100000038A0A52BD8C44CC07A185A9D9C0543C0,'{\"consumo\": 0}','2019-12-19 23:00:00');
+INSERT INTO `medicion` VALUES (3,1,0x000000000101000000D04543C6A3C44CC09813B4C9E10543C0,'{\"consumo\": 0}','2019-12-12 12:12:00'),(4,1,0x000000000101000000BC96900F7AC24CC08AB0E1E9950443C0,'{\"consumo\": 20}','2019-12-12 12:35:00'),(5,1,0x00000000010100000007D0EFFB37434BC05DFA97A4320942C0,'{\"consumo\": 50}','2019-12-13 18:00:00'),(6,1,0x000000000101000000C47C7901F6E148C0E199D024B1343FC0,'{\"consumo\": 5}','2019-12-15 21:00:00'),(7,1,0x0000000001010000000F09DFFB1B144BC09AED0A7DB02042C0,'{\"consumo\": 40}','2019-12-17 21:50:00'),(8,1,0x00000000010100000038A0A52BD8C44CC07A185A9D9C0543C0,'{\"consumo\": 0}','2019-12-20 18:00:00'),(9,2,0x00000000010100000013F1D6F9B7594DC0DB368C82E04943C0,'{\"consumo\": 0}','2019-12-17 13:00:00'),(10,2,0x000000000101000000143FC6DCB5104DC005A3923A014343C0,'{\"consumo\": 45}','2019-12-17 18:15:00'),(11,2,0x000000000101000000A9DDAF027CB14DC0D05E7D3CF46743C0,'{\"consumo\": 40}','2019-12-18 14:15:00'),(12,2,0x00000000010100000030849CF7FF3B4EC0302C7FBE2D9443C0,'{\"consumo\": 55}','2019-12-19 19:45:00'),(13,3,0x0000000001010000005B5CE333D9594DC05DC47762D64943C0,'{\"consumo\": 0}','2019-12-15 12:00:00'),(14,3,0x0000000001010000006729594E42094DC047753A90F54243C0,'{\"consumo\": 35}','2019-12-16 04:00:00'),(15,3,0x000000000101000000164D672783D74CC0C4279D48303543C0,'{\"consumo\": 37}','2019-12-16 15:00:00'),(16,3,0x0000000001010000004AD1CABDC0B84CC07BD7A02FBD1943C0,'{\"consumo\": 40}','2019-12-17 14:22:00'),(17,3,0x000000000101000000677E350708C44CC01FF64201DB0543C0,'{\"consumo\": 0}','2019-12-18 16:00:00');
 /*!40000 ALTER TABLE `medicion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -231,6 +231,7 @@ CREATE TABLE `pescado` (
 
 LOCK TABLES `pescado` WRITE;
 /*!40000 ALTER TABLE `pescado` DISABLE KEYS */;
+INSERT INTO `pescado` VALUES (1,12000,'merluza'),(3,15000,'merluza');
 /*!40000 ALTER TABLE `pescado` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -276,7 +277,7 @@ CREATE TABLE `punto_derrotero` (
   KEY `punto_derrotero_FK` (`fk_derrotero`),
   SPATIAL KEY `coordenadas` (`coordenadas`),
   CONSTRAINT `punto_derrotero_FK` FOREIGN KEY (`fk_derrotero`) REFERENCES `derrotero` (`id_derrotero`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -285,7 +286,7 @@ CREATE TABLE `punto_derrotero` (
 
 LOCK TABLES `punto_derrotero` WRITE;
 /*!40000 ALTER TABLE `punto_derrotero` DISABLE KEYS */;
-INSERT INTO `punto_derrotero` VALUES (3,1,0x000000000101000000D04543C6A3C44CC09813B4C9E10543C0,'2019-12-12 12:12:00'),(4,1,0x0000000001010000006EA296E656C24CC0350BB43BA40443C0,'2019-12-12 12:30:00'),(5,1,0x00000000010100000021E4BCFF8F634BC0C3F352B131FB41C0,'2019-12-13 12:30:00'),(6,1,0x000000000101000000751E15FF77D848C0D6FCF84B8BFA3EC0,'2019-12-15 17:30:00'),(8,1,0x000000000101000000605B3FFD67134BC0463F1A4E992142C0,'2019-12-17 19:30:00'),(9,1,0x00000000010100000066BCADF4DAC44CC0F7393E5A9C0543C0,'2019-12-19 22:30:00');
+INSERT INTO `punto_derrotero` VALUES (3,1,0x000000000101000000D04543C6A3C44CC09813B4C9E10543C0,'2019-12-12 12:12:00'),(4,1,0x0000000001010000006EA296E656C24CC0350BB43BA40443C0,'2019-12-12 12:30:00'),(5,1,0x00000000010100000021E4BCFF8F634BC0C3F352B131FB41C0,'2019-12-13 12:30:00'),(6,1,0x000000000101000000751E15FF77D848C0D6FCF84B8BFA3EC0,'2019-12-15 17:30:00'),(8,1,0x000000000101000000605B3FFD67134BC0463F1A4E992142C0,'2019-12-17 19:30:00'),(9,1,0x00000000010100000066BCADF4DAC44CC0F7393E5A9C0543C0,'2019-12-19 22:30:00'),(10,2,0x00000000010100000013F1D6F9B7594DC0DB368C82E04943C0,'2019-12-17 08:05:00'),(11,2,0x00000000010100000025CCB4FD2B114DC0A19DD32CD04243C0,'2019-12-17 19:15:00'),(12,2,0x0000000001010000007A6F0C01C0A94DC0912C6002B78243C0,'2019-12-18 12:15:00'),(13,2,0x00000000010100000000000000003C4EC0BFB854A52D9443C0,'2019-12-19 16:45:00'),(14,2,0x000000000101000000598B4F0130C04EC02C11A8FE41FC43C0,'2019-12-20 14:30:00'),(15,2,0x000000000101000000E6EB32FCA7CF4EC0D2C3D0EAE49843C0,'2019-12-21 22:37:00'),(16,2,0x0000000001010000009C69C2F6930D4FC051BD35B0557243C0,'2019-12-22 15:00:00'),(17,3,0x0000000001010000005B5CE333D9594DC05DC47762D64943C0,'2019-12-15 12:00:00'),(18,3,0x0000000001010000007E5182FE42094DC06CB3B112F34243C0,'2019-12-15 22:00:00'),(19,3,0x0000000001010000003FE0810184D74CC0FF59F3E32F3543C0,'2019-12-16 06:00:00'),(20,3,0x000000000101000000CDAFE600C1B84CC0AB5B3D27BD1943C0,'2019-12-16 23:22:00'),(21,3,0x000000000101000000677E350708C44CC01FF64201DB0543C0,'2019-12-17 18:00:00');
 /*!40000 ALTER TABLE `punto_derrotero` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -315,11 +316,12 @@ CREATE TABLE `punto_salteado` (
 
 LOCK TABLES `punto_salteado` WRITE;
 /*!40000 ALTER TABLE `punto_salteado` DISABLE KEYS */;
+INSERT INTO `punto_salteado` VALUES (5,1,1),(6,1,1);
 /*!40000 ALTER TABLE `punto_salteado` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping routines for database 'Barcos'
+-- Dumping routines for database 'TPFINALBDII'
 --
 /*!50003 DROP FUNCTION IF EXISTS `barcos_fuera_puerto` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -442,18 +444,19 @@ DELIMITER ;;
 CREATE  FUNCTION `empresa_mas_merluza`() RETURNS int(11)
 BEGIN
 	DECLARE empresa INT;
-	DECLARE cantidad FLOAT;
 
-	SELECT e.id_empresa, SUM(p.cantidad) AS cantidad
-	FROM empresa e
-		INNER JOIN barco b ON b.fk_empresa = e.id_empresa
-		INNER JOIN derrotero d ON d.fk_barco = b.id_barco
-		INNER JOIN pescado p ON p.fk_derrotero = d.id_derrotero
-	WHERE d.fecha_arribo > (NOW() - INTERVAL 7 DAY) AND p.tipo='merluza' 
-	GROUP BY e.id_empresa
-	ORDER BY cantidad DESC
-	LIMIT 1
-	INTO empresa, cantidad;
+	SELECT id_empresa
+	FROM (
+		SELECT e.id_empresa, SUM(p.cantidad) AS cantidad
+		FROM empresa e
+			INNER JOIN barco b ON b.fk_empresa = e.id_empresa
+			INNER JOIN derrotero d ON d.fk_barco = b.id_barco
+			INNER JOIN pescado p ON p.fk_derrotero = d.id_derrotero
+		WHERE d.fecha_arribo > (NOW() - INTERVAL 7 DAY) AND p.tipo='merluza' 
+		GROUP BY e.id_empresa
+		ORDER BY cantidad DESC
+		LIMIT 1) t
+	INTO empresa;
 
 	RETURN empresa;
 END ;;
@@ -548,7 +551,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013  SQL SECURITY DEFINER */
-/*!50001 VIEW `barcos_consumo_excesivo` AS select `b`.`id_barco` AS `id_barco` from (`barco` `b` join `derrotero` `d` on((`d`.`fk_barco` = `b`.`id_barco`))) where ((`d`.`id_derrotero` = (select `d2`.`id_derrotero` from `derrotero` `d2` where (`d2`.`fk_barco` = `b`.`id_barco`) order by `d2`.`fecha_salida` limit 1)) and ((select avg(json_unquote(json_extract(`m`.`datos_sensores`,'$.consumo'))) from `medicion` `m` where (`m`.`fk_derrotero` = `d`.`id_derrotero`)) > (`b`.`consumo_promedio` * 1.1))) */;
+/*!50001 VIEW `barcos_consumo_excesivo` AS select `b`.`id_barco` AS `id_barco` from (`barco` `b` join `derrotero` `d` on((`d`.`fk_barco` = `b`.`id_barco`))) where ((`d`.`id_derrotero` = (select `d2`.`id_derrotero` from `derrotero` `d2` where (`d2`.`fk_barco` = `b`.`id_barco`) order by `d2`.`fecha_salida` desc limit 1)) and ((select avg(json_unquote(json_extract(`m`.`datos_sensores`,'$.consumo'))) from `medicion` `m` where (`m`.`fk_derrotero` = `d`.`id_derrotero`)) > (`b`.`consumo_promedio` * 1.1))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
@@ -580,4 +583,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-12-15 21:16:31
+-- Dump completed on 2019-12-17 17:38:55
