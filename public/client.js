@@ -176,5 +176,39 @@ function getBancosPesca() {
         });
 };
 
+function getTrayectosDerroteros() {
+    fetch('/derroteros/trayectos')
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            data.forEach(trajectory => {
+                L.geoJSON(JSON.parse(trajectory.geo)).addTo(map);
+            });
+        })
+        .catch(error => {
+            console.log(error);
+            alert('Hubo un error al tratar de cumplir la petición.')
+        });
+};
+
+function getTrayectosReales() {
+    fetch('/mediciones/trayectos')
+        .then(response => {
+            return response.json();
+        })
+        .then(data => {
+            data.forEach(trajectory => {
+                L.geoJSON(JSON.parse(trajectory.geo)).addTo(map);
+            });
+        })
+        .catch(error => {
+            console.log(error);
+            alert('Hubo un error al tratar de cumplir la petición.')
+        });
+};
+
 getPuertos();
 getBancosPesca();
+getTrayectosDerroteros();
+getTrayectosReales();

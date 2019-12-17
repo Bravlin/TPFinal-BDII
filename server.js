@@ -83,6 +83,20 @@ module.exports.startServer = (host, port, db) => {
         });
     });
 
+    app.get('/derroteros/trayectos', (req, res) => {
+        db.query('SELECT ST_AsGeoJSON(linea) AS geo FROM trayecto_derrotero', (error, results) => {
+            if (error) throw error;
+            res.json(results);
+        });
+    });
+
+    app.get('/mediciones/trayectos', (req, res) => {
+        db.query('SELECT ST_AsGeoJSON(linea) AS geo FROM trayecto_real', (error, results) => {
+            if (error) throw error;
+            res.json(results);
+        });
+    });
+
     app.listen(app.get('port'), () => {
         console.log(app.get('host'));
         console.log('Server listen on port', app.get('port'));
